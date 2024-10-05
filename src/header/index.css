@@ -1,0 +1,34 @@
+header {
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #F5F5DC ;
+  border-bottom: solid 0.3px #dddd;
+  padding: 8px 20px;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.nav-link {
+  display: flex;
+  margin: 0 20px;
+}
+
+.nav-link li {
+  list-style: none;
+  padding: 5px 10px;
+  color: #555;
+}
+
+.nav-link a {
+  color: #1a1a1a;
+}
+
+.nav-link:hover a {
+  color: #333;
+}

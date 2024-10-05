@@ -1,0 +1,88 @@
+.container {
+  max-width: 900px;
+  margin: 50px auto;
+  border-bottom: solid 0.3px #dadada;
+  box-sizing: border-box;
+}
+
+.big-card {
+  width: 100%;
+  min-height: 500px;
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 50px;
+}
+
+.big-card img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.big-card p {
+  line-height: 1.5;
+  margin: 30px 12px;
+}
+
+.card-container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.card {
+  width: 280px;
+  min-height: 200px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  border-bottom: #ddd solid 0.3px;
+}
+
+.card .card-image {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.card div {
+  padding: 10px;
+}
+
+.card p {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.form {
+  max-width: 800px;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
+  background-color: #dadada;
+  display: flex;
+  margin: 30px;
+  border-radius: 8px;
+  right: 5px;
+}
+
+.form h3 {
+  font-size: 18px;
+  max-width: 200px;
+}
+
+.form label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  margin: 15px 10px;
+}
+
+.form input {
+  font-size: 16px;
+  padding: 8px;
+  width: 200px;
+  border-width: 0.3px;
+  outline: #ddd;
+  border-radius: 8px;
+  margin: 6px 0 ;
+}
