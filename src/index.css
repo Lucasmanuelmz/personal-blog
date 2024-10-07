@@ -8,11 +8,21 @@ html, body {
 
 button {
   font-size: 1rem;
-  padding: 0.6rem 1.2rem;
-  border-radius: 0.6rem;
+  padding: 0.8rem 1.2rem;
+  border-radius: 0.2rem;
   border: none;
   display: block;
   cursor: pointer;
-  background-color: #603450;
+  background-color: #335FFF;
   color: #fff;
+  width: max-content;
+  margin-top: 15px;
+}
+
+button:hover {
+  background-color: #3c64f7;
+}
+
+button:focus {
+  background-color: #335FFF;
 }

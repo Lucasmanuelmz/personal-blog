@@ -1,13 +1,13 @@
+import { Outlet } from 'react-router-dom'
 import './App.css'
 import Footer from './footer'
-import Header from './header'
-import HomePage from './pages'
+import Header from './header';
 
 function App() {
   return (
     <div>
      <Header />
-     <HomePage />
+     <Outlet />
      <Footer />
     </div>
   )
