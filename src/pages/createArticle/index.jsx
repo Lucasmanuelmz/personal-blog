@@ -7,7 +7,6 @@ export default function CreateArticle() {
   const [title, setTitle] = useState('');
   const [file, setFile] = useState(null); 
   const editorRef = useRef(null);
-  const content = editorRef.current.getContent()
 
   function handleChange(e) {
     const {value} = e.target;
@@ -23,8 +22,14 @@ export default function CreateArticle() {
     
     const formData = new FormData();
 
+    if(editorRef.current) {
+      const content = editorRef.current.getContent();
+      formData.append('article', content);
+    } else {
+      console.log('Editor ainda não está pronto');
+    }
+
     formData.append('title', title);
-    formData.append('article', content); 
     formData.append('file', file); 
 
     axios.post('http://localhost:5000/articles', formData, {
