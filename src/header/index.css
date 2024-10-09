@@ -1,7 +1,7 @@
 header {
   width: 100%;
   box-sizing: border-box;
-  background-color: #F5F5DC ;
+  background-color: #fdfdfd ;
   border-bottom: solid 0.3px #dddd;
   padding: 8px 20px;
 }
@@ -17,6 +17,8 @@ header {
 .nav-link {
   display: flex;
   margin: 0 20px;
+  justify-content: center;
+  align-items: center;
 }
 
 .nav-link li {
@@ -27,8 +29,38 @@ header {
 
 .nav-link a {
   color: #1a1a1a;
+  text-decoration: none;
+  text-transform: capitalize;
+  font-size: 16px;
 }
 
 .nav-link:hover a {
   color: #333;
 }
+
+.link-auth {
+  background-color: #5762c7;
+  padding: 0.6rem 1.2rem;
+  margin: 0 10px;
+  border-radius: 0.3rem;
+  color: #fff;
+}
+
+.link-auth a {
+  color: #ffeeff;
+  text-decoration: none;
+}
+
+.link-auth:hover  {
+  background-color: #5f6ac7;
+}
+
+.link-auth:hover a {
+   color: #ffeeff;
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+}
+

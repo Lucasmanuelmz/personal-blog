@@ -47,3 +47,8 @@ legend {
   border-radius: 8px;
   background-color: #fffffe;
 }
+
+.select {
+  padding: 10px;
+  border: none;
+}
