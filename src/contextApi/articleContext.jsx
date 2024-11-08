@@ -4,11 +4,11 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 const ArticleContext = createContext();
 
-export function ArticleProvider({children}) {
-  const [article, setArticle] = useState(null);
+export function ArticleProvider({id, children}) {
+  const [article, setArticle] = useState({});
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/articles/2`)
+    axios.get(`http://localhost:5000/articles/id/${id}`)
     .then((response) => {
       const article = response.data.article;
       setArticle(article);
@@ -16,7 +16,7 @@ export function ArticleProvider({children}) {
     .catch(error => {
       console.log(error.message)
     })
-  },[])
+  },[id])
 
   return(
     <ArticleContext.Provider value={{article, setArticle}} >
@@ -34,5 +34,6 @@ export function useArticle() {
 }
 
 ArticleProvider.propTypes = {
+  id: PropTypes.number.isRequired,
   children: PropTypes.node.isRequired
 }

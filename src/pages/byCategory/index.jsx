@@ -2,6 +2,8 @@ import {FindCategoriesProvider, useCategories } from "../../contextApi/categoryF
 import { Link, useParams } from "react-router-dom"; 
 import { formatDate } from "../../components/format"; 
 import { motion } from "framer-motion";
+import { lazy, Suspense } from "react";
+const Loading = lazy(() => import('../loading/index'))
 
 export function CategoriesFindArticle() {
   const {slug} = useParams()
@@ -16,6 +18,7 @@ export default function FilterByCategory() {
   const { categories } = useCategories();
 
   return (
+    <Suspense fallback ={<Loading/>} >
     <main>
        <section style={{border: 'none'}} className="container">
       { categories && categories.length > 0 && (
@@ -29,7 +32,7 @@ export default function FilterByCategory() {
             <img src={article.url} alt={article.title} className="card-image" />
             <div>
               <div className='commer'><div>{formatDate(article.createdAt)}</div><span></span>{article.category? article.category.name: null}</div>
-              <h4><Link className='link' to={`/article/${article.id}`}>{article.title}</Link></h4>
+              <h4><Link className='link' to={`/articles/slug/${article.slug}`}>{article.title}</Link></h4>
             </div>
           </motion.div>   
           ))}
@@ -37,5 +40,6 @@ export default function FilterByCategory() {
       )}
       </section>
     </main>
+    </Suspense>
   );
 }

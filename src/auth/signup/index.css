@@ -1,0 +1,44 @@
+.auth {
+  max-width: 400px;
+  height: auto;
+  margin: 40px auto 100px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 4px 4px 4px 4px #ececec;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.contains-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.contains-password {
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  margin-right: 5px;
+}
+
+.auth-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 5px 0;
+}
+
+.auth-container input {
+  margin: 5px 0;
+  padding: 8px 5px;
+  border: solid #ccc .5px;
+  border-radius: 9px;
+}
+
+.title {
+  font-size: 26px;
+  text-align: center;
+  margin-bottom: 25px;
+  padding: 0;
+}

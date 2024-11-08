@@ -1,11 +1,17 @@
-import { useRef, useState } from 'react';
+import { lazy, Suspense, useRef, useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import './index.css';
 import axios from 'axios';
 import { useCategories } from '../../contextApi/categoryContext';
+const Loading = lazy(() => import('../loading/index'))
 
 export default function CreateArticle() {
-  const [text, setText] = useState({title: '', categoryId: '', description: ''});
+  const [text, setText] = useState(
+    {
+      title: '', 
+      categoryId: '', 
+      description: ''
+    });
   const [file, setFile] = useState(null); 
   const editorRef = useRef(null);
   const {categories} = useCategories();
@@ -53,6 +59,7 @@ export default function CreateArticle() {
   }
 
   return (
+    <Suspense fallback={<Loading/>}>
     <main className='main'>
       <form onSubmit={handleSubmit} className="form-editor">
         <legend>Crie um artigo</legend>
@@ -102,5 +109,6 @@ export default function CreateArticle() {
         <button type="submit">Criar artigo</button>
       </form>
     </main>
+    </Suspense>
   );
 }

@@ -1,21 +1,31 @@
-import { ReadArticleProvider, useArticle } from "../../contextApi/readContext";
+
 import { useParams } from "react-router-dom";
 import ReactHtmlParser from 'react-html-parser';
-import './index.css'
-import { useEffect } from "react";
+import './index.css';
+import { useEffect, lazy, Suspense } from "react";
+import { ReadArticleProvider, useReadArticle } from "../../contextApi/readContext";
+import AnimationSplash from "../../components/animationSplash";
+import DOMPurify from 'dompurify';
+import ErrorComponent from "../../components/errorComponent";
+const Loading  = lazy(() => import("../loading"));
 
 export function ReadPage() {
-  const {id} = useParams();
-  return(
-    <ReadArticleProvider id={id}>
-      <ReadArticle />
-    </ReadArticleProvider>
-  )
+  const {slug} = useParams();
+  console.log(`Recebi o slug aqui no componete de leitura do artigo: ${slug}`)
+
+  return (
+  <ReadArticleProvider slug={slug} >
+    <Suspense fallback={<Loading />}>
+    <ReadArticle />
+    </Suspense>
+  </ReadArticleProvider>
+  );
 }
 
 export default function ReadArticle() {
-  const {article} = useArticle()
-
+  const {readArticle, loading, error} = useReadArticle();
+  console.log(`O artigo recebido: ${readArticle}`)
+ 
   function formatDate(date) {
     return new Date(date).toLocaleString('pt-PT', {
       day: '2-digit',
@@ -23,33 +33,63 @@ export default function ReadArticle() {
       year: 'numeric',
       hour: '2-digit',
       minute: '2-digit'
-    })
+    });
   }
 
-useEffect(() => {
-  if(article) {
-   document.title = article.title
-   document
-   .querySelector('meta[name="description"]')
-   .setAttribute('content', article.description || 'Aprenda tudo sobre desenvolvimento web full stack neste blog. Compartilhamos informações sobre frontend, backend, entre outros.');
+  useEffect(() => {
+    if (readArticle) {
+      document.title = readArticle.title;
+      document
+        .querySelector('meta[name="description"]')
+        .setAttribute(
+          'content',
+          readArticle.description || 'Aprenda tudo sobre desenvolvimento web full stack neste blog. Compartilhamos informações sobre frontend, backend, entre outros.'
+        );
+    }
+  }, [readArticle]);
+
+  if (loading) {
+    return(
+    <div style={{
+      width: '100%',
+      height: '100vh',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      boxSizing: 'border-box'
+    }}>
+      <AnimationSplash />
+    </div>
+    );
   }
-},[article])
+
+  if (error) {
+    return <div>Erro ao carregar o artigo. Tente novamente mais tarde.</div>;
+  }
+
+  const cleanContent = DOMPurify.sanitize(readArticle.article, {
+    USE_PROFILES: { html: true }, 
+    ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p', 'h1', 'h2', 'h3', 'ul', 'li'], 
+    ALLOWED_ATTR: ['href', 'title', 'alt', 'src'], 
+   })
 
   return (
+    <Suspense fallback={<Loading />}>
     <main>
-      {article ? (
+      {readArticle ? (
         <article className="article">
-          <h1>{article.title}</h1>
-          <img src={article.url} alt="" />
-          <div>{ReactHtmlParser(article.article)}</div>
-          <span style={{
-            textAlign: 'right',
-            display: 'block'
-          }}>Pubicado em: {formatDate(article.createdAt)}</span>
+          <h1>{readArticle.title}</h1>
+          <img src={readArticle.url} alt={readArticle.title} />
+          <div>{ReactHtmlParser(cleanContent)}</div>
+          <div className="commer">
+            Publicado em: {formatDate(readArticle.createdAt)}<span></span>
+            <div style={{color: 'orangered'}}>{readArticle.category.name}</div>
+          </div>
         </article>
       ) : (
-        <div>No article found.</div> 
+      <ErrorComponent/>
       )}
     </main>
+    </Suspense>
   );
 }

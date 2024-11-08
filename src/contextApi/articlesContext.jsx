@@ -4,22 +4,28 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 const ArticlesContext = createContext();
 
-export function ArticlesProvider({children}) {
-  const [articles, setArticles] = useState();
+export function ArticlesProvider({page, children}) {
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [hasNextPage, setHasNextPage] = useState(false);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/articles')
+    setLoading(true);
+    axios.get(`http://localhost:5000/articles/${page}`)
     .then(response => {
       const articles = response.data.articles;
+      setHasNextPage(response.data.next);
+        setLoading(false);
       setArticles(articles);
     })
     .catch(error => {
+      setLoading(false);
       console.log(error.message)
     })
-  },[])
+  },[page])
 
   return(
-    <ArticlesContext.Provider value={{articles, setArticles}}>
+    <ArticlesContext.Provider value={{articles, loading, hasNextPage}}>
       {children}
     </ArticlesContext.Provider>
   )
@@ -34,5 +40,6 @@ export function useArticles() {
 };
 
 ArticlesProvider.propTypes = {
+  page: PropTypes.number.isRequired,
   children: PropTypes.node.isRequired
 }

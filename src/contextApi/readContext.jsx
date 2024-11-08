@@ -1,39 +1,63 @@
 import axios from "axios";
 import PropTypes from "prop-types";
-import { createContext, useContext, useEffect, useState } from "react";
+import { 
+  createContext, 
+  useContext, 
+  useEffect, 
+  useState 
+} from "react";
 
 const ReadArticleContext = createContext();
 
-export function ReadArticleProvider({id, children}) {
-  const [article, setArticle] = useState(null);
-
+export function ReadArticleProvider({slug, children}) {
+  const [readArticle, setReadArticle] = useState({});
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null);
+  console.log(`O slug recebido esta aqui: ${slug}`)
+ 
   useEffect(() => {
-    axios.get(`http://localhost:5000/articles/${id}`)
-    .then((response) => {
-      const article = response.data.article;
-      setArticle(article);
-    })
-    .catch(error => {
-      console.log(error.message)
-    })
-  },[id])
+    function fetchArticle() {
+      setLoading(true);
+      setError(null);
+        axios.get(`http://localhost:5000/articles/slug/${slug}`)
+        .then(response => {
+          if(response.status === 200) {
+          setReadArticle(response.data.article);
+        }
+        })
+       
+       .catch(error => {
+        if (axios.isCancel(error)) {
+          console.log("Requisição cancelada:", error.message);
+        } else {
+          setError("Erro ao carregar o artigo.");
+        }
+      })
+      .finally(() => {
+         setLoading(false);
+      })
+    };
 
-  return(
-    <ReadArticleContext.Provider value={{article, setArticle}} >
+    fetchArticle();
+  }, [slug]);
+
+  return (
+    <ReadArticleContext.Provider value={{ readArticle, loading, error, setReadArticle }}>
       {children}
     </ReadArticleContext.Provider>
-  )
+  );
 }
 
-export function useArticle() {
+export function useReadArticle() {
   const context = useContext(ReadArticleContext);
-  if(!context) {
-    throw new Error('Nao foi possivel obter o artigo')
+  if (!context) {
+    throw new Error('Não foi possível obter o artigo');
   }
   return context;
 }
 
 ReadArticleProvider.propTypes = {
-  id: PropTypes.number.isRequired,
-  children: PropTypes.node.isRequired
-}
+  slug: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+};
+
